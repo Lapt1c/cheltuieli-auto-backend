@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Expense Management</title>
+</head>
+<body>
+<nav>
+    <a href="/cars">Go to Cars</a> |
+    <a href="/expenses">Go to Expenses</a>
+</nav>
+<hr>
+
+<h2>Add a New Expense</h2>
+<form th:action="@{/expenses}" th:object="${newExpense}" method="post">
+
+    <label>Select Car:</label>
+    <select th:field="*{car}" required>
+        <option value="">-- Select --</option>
+        <option th:each="c : ${cars}" th:value="${c.id}" th:text="${c.brand + ' ' + c.model + ' (' + c.plateNumber + ')'}"></option>
+    </select>
+    <br/><br/>
+
+    <label>Expense Type:</label>
+    <select th:field="*{type}" required>
+        <option th:each="type : ${expenseTypes}" th:value="${type}" th:text="${type}"></option>
+    </select>
+    <br/><br/>
+
+    <label>Amount (RON):</label>
+    <input type="number" step="0.01" th:field="*{amount}" required />
+    <br/><br/>
+
+    <label>Date:</label>
+    <input type="date" th:field="*{date}" required />
+    <br/><br/>
+
+    <button type="submit">Add Expense</button>
+</form>
+
+<hr>
+
+<h3>Filter Expenses</h3>
+<form th:action="@{/expenses}" method="get">
+
+    <label>By Car:</label>
+    <select name="carId" onchange="this.form.submit()">
+        <option value="">-- All Cars --</option>
+        <option th:each="c : ${cars}"
+                th:value="${c.id}"
+                th:text="${c.brand + ' ' + c.plateNumber}"
+                th:selected="${selectedCarId != null and c.id == selectedCarId}">
+        </option>
+    </select>
+
+    <label>By Type:</label>
+    <select name="type" onchange="this.form.submit()">
+        <option value="">-- All Types --</option>
+        <option th:each="t : ${expenseTypes}"
+                th:value="${t}"
+                th:text="${t}"
+                th:selected="${selectedType != null and t == selectedType}">
+        </option>
+    </select>
+
+    <noscript><button type="submit">Filter</button></noscript>
+</form>
+
+<hr>
+
+<div style="background-color: #f0f0f0; padding: 10px; margin-bottom: 20px; border-radius: 5px;">
+    <h3 style="margin: 0;">Total Expenses: <span style="color: #d9534f;" th:text="${totalAmount != null ? totalAmount : 0} + ' RON'">0.0 RON</span></h3>
+</div>
+
+<h2>Expense History</h2>
+<table border="1">
+    <tr>
+        <th>Car</th>
+        <th>Type</th>
+        <th>Amount</th>
+        <th>Date</th>
+    </tr>
+    <tr th:each="exp : ${expenses}">
+        <td th:text="${exp.car.brand + ' ' + exp.car.plateNumber}"></td>
+        <td th:text="${exp.type}"></td>
+        <td th:text="${exp.amount + ' RON'}"></td>
+        <td th:text="${exp.date}"></td>
+    </tr>
+</table>
+</body>
+</html>

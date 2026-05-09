@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Car Management</title>
+</head>
+<body>
+<nav>
+    <a href="/cars">Go to Cars</a> |
+    <a href="/expenses">Go to Expenses</a>
+</nav>
+<hr>
+
+<h2>Add a New Car</h2>
+<form th:action="@{/cars}" th:object="${newCar}" method="post">
+    <label>Brand:</label> <input type="text" th:field="*{brand}" required /> <br/><br/>
+    <label>Model:</label> <input type="text" th:field="*{model}" required /> <br/><br/>
+    <label>Plate Number:</label> <input type="text" th:field="*{plateNumber}" required /> <br/><br/>
+    <button type="submit">Add Car</button>
+</form>
+
+<hr>
+
+<h2>My Cars</h2>
+<table border="1">
+    <tr><th>Brand</th><th>Model</th><th>Plate Number</th></tr>
+    <tr th:each="car : ${cars}">
+        <td th:text="${car.brand}"></td>
+        <td th:text="${car.model}"></td>
+        <td th:text="${car.plateNumber}"></td>
+    </tr>
+</table>
+</body>
+</html>
