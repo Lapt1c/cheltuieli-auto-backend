@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class Car {
@@ -13,10 +15,15 @@ public class Car {
     private String model;
     private String plateNumber;
 
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Expense> expenses;
+
+    // --- Getteri și Setteri ---
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -32,4 +39,7 @@ public class Car {
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
+
+    public List<Expense> getExpenses() { return expenses; }
+    public void setExpenses(List<Expense> expenses) { this.expenses = expenses; }
 }

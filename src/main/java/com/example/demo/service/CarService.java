@@ -20,4 +20,7 @@ public class CarService {
     public void saveCar(Car car) {
         carRepository.save(car);
     }
+    public void deleteCar(Long id) {
+        carRepository.deleteById(id);
+    }
 }
